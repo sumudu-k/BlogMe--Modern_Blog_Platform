@@ -12,6 +12,22 @@ if (!isset($_SESSION['admin_id'])) {
 $message = '';
 $messageType = '';
 
+// Get admin role 
+$stmt_role = $pdo->prepare("SELECT * FROM admins WHERE id = ?");
+$stmt_role->execute([$_SESSION['admin_id']]);
+$adminInfo = $stmt_role->fetch();
+
+$adminRole = $adminInfo['role'] ?? 'admin';
+
+include_once 'navbar.php';
+
+if ($adminRole === 'demo'): ?>
+<div class="container-lg mt-3  alert alert-warning text-center" role="alert">
+    You cannot add, update or delete anything in Demo mode. Please setup your own local environment to access full
+    features. Visit [https://github.com/sumudu-k/BlogMe] for more details.
+</div>
+<?php endif;
+
 // Handle notification submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['send_notification'])) {
     $title = trim($_POST['title']);
@@ -177,8 +193,6 @@ $previewData = isset($_SESSION['notification_preview']) ? $_SESSION['notificatio
 </head>
 
 <body>
-    <?php include_once 'navbar.php'; ?>
-
     <!-- Main Content -->
     <div class="container-fluid py-4">
         <div class="row mb-4">
@@ -392,9 +406,18 @@ $previewData = isset($_SESSION['notification_preview']) ? $_SESSION['notificatio
                                     </label>
                                 </div>
                             </div>
+                            <?php if ($adminRole === 'demo'): ?>
+                            <button type="button" class="btn btn-primary">
+                                <i class="fas fa-paper-plane me-2"></i>Send Notification
+                            </button>
+                            <div class="alert alert-warning mt-3" role="alert">
+                                You cannot send notifications in Demo mode.
+                            </div>
+                            <?php else: ?>
                             <button type="submit" name="send_notification" class="btn btn-primary">
                                 <i class="fas fa-paper-plane me-2"></i>Send Notification
                             </button>
+                            <?php endif; ?>
                         </form>
                     </div>
                 </div>
