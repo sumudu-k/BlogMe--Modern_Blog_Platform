@@ -77,6 +77,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <body class="bg-light">
     <div class="container mt-5">
         <div class="row justify-content-center">
+
+            <div class=" container alert alert-warning  ">
+                <h5>Demo Admin Account Credentials </h5>
+                <p>Email: admin@gmail.com</p>
+                <p>Password: 12345678</p>
+            </div>
             <div class="col-md-6">
                 <div class="card shadow">
                     <div class="card-header bg-primary text-white">

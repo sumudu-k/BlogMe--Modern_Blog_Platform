@@ -16,6 +16,21 @@ $blogId = isset($_GET['id']) ? (int)$_GET['id'] : 0;
 $errorMsg = '';
 $blog = null;
 
+// Get user role 
+$stmt_role = $pdo->prepare("SELECT * FROM users WHERE id = ?");
+$stmt_role->execute([$_SESSION['user_id']]);
+$userInfo = $stmt_role->fetch();
+
+$userRole = $userInfo['role'] ?? 'user';
+
+$userId = $_SESSION['user_id'];
+$errorMsg = '';
+$successMsg = '';
+
+if ($userRole === 'demo') {
+    $errorMsg = "You cannot delete blogs in Demo mode. Please setup your own local environment to access full features. Visit [https://github.com/sumudu-k/BlogMe] for more details.";
+}
+
 if ($blogId <= 0) {
     $_SESSION['flash_message'] = "Invalid blog ID";
     $_SESSION['flash_type'] = "danger";
@@ -50,10 +65,7 @@ try {
 // Handle actual deletion (after confirmation)
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['confirm_delete'])) {
     try {
-        // Start transaction
         $pdo->beginTransaction();
-
-
 
         // Delete blog post
         $stmt = $pdo->prepare("DELETE FROM blogs WHERE id = ? AND author_id = ?");

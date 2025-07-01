@@ -8,6 +8,29 @@ if (!isset($_SESSION['admin_id'])) {
     exit;
 }
 
+// Get admin role 
+$stmt_role = $pdo->prepare("SELECT * FROM admins WHERE id = ?");
+$stmt_role->execute([$_SESSION['admin_id']]);
+$adminInfo = $stmt_role->fetch();
+
+$adminRole = $adminInfo['role'] ?? 'admin';
+
+$adminId = $_SESSION['admin_id'];
+$errorMsg = '';
+$successMsg = '';
+
+include_once 'navbar.php';
+
+if ($adminRole === 'demo'): ?>
+<div class="container-lg mt-3  alert alert-warning text-center" role="alert">
+    You cannot add, update or delete anything in Demo mode. Please setup your own local environment to access full
+    features. Visit [https://github.com/sumudu-k/BlogMe] for more details.
+</div>
+<?php endif;
+
+
+
+
 try {
     // Total users count
     $userStmt = $pdo->prepare("SELECT COUNT(*) FROM users");
@@ -36,35 +59,35 @@ try {
 
     // Recent posts
     $recentPostsStmt = $pdo->prepare("
-        SELECT b.*, c.name as category_name, u.username, u.first_name, u.last_name 
-        FROM blogs b
-        LEFT JOIN categories c ON b.category_id = c.id
-        LEFT JOIN users u ON b.author_id = u.id
-        ORDER BY b.created_at DESC
-        LIMIT 5
-    ");
+SELECT b.*, c.name as category_name, u.username, u.first_name, u.last_name
+FROM blogs b
+LEFT JOIN categories c ON b.category_id = c.id
+LEFT JOIN users u ON b.author_id = u.id
+ORDER BY b.created_at DESC
+LIMIT 5
+");
     $recentPostsStmt->execute();
     $recentPosts = $recentPostsStmt->fetchAll();
 
     // Recent users
     $recentUsersStmt = $pdo->prepare("
-        SELECT * FROM users
-        ORDER BY created_at DESC
-        LIMIT 5
-    ");
+SELECT * FROM users
+ORDER BY created_at DESC
+LIMIT 5
+");
     $recentUsersStmt->execute();
     $recentUsers = $recentUsersStmt->fetchAll();
 
     // Popular posts
     $popularPostsStmt = $pdo->prepare("
-        SELECT b.*, c.name as category_name, u.username,c.color, u.first_name, u.last_name,
-               (SELECT COUNT(*) FROM blog_likes WHERE blog_id = b.id) as likes_count
-        FROM blogs b
-        LEFT JOIN categories c ON b.category_id = c.id
-        LEFT JOIN users u ON b.author_id = u.id
-        ORDER BY b.views DESC
-        LIMIT 5
-    ");
+SELECT b.*, c.name as category_name, u.username,c.color, u.first_name, u.last_name,
+(SELECT COUNT(*) FROM blog_likes WHERE blog_id = b.id) as likes_count
+FROM blogs b
+LEFT JOIN categories c ON b.category_id = c.id
+LEFT JOIN users u ON b.author_id = u.id
+ORDER BY b.views DESC
+LIMIT 5
+");
     $popularPostsStmt->execute();
     $popularPosts = $popularPostsStmt->fetchAll();
 } catch (PDOException $e) {
@@ -86,7 +109,6 @@ try {
 </head>
 
 <body>
-    <?php include_once 'navbar.php'; ?>
 
     <div class="container-fluid py-4">
         <div class="row mb-4">

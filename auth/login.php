@@ -86,6 +86,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     include_once '../includes/header.php';
     ?>
 
+    <div class="mt-3 container alert alert-warning  ">
+        <h5>Demo Account Credentials </h5>
+        <p>Email: sumudu20010521@gmail.com</p>
+        <p>Password: 12345678</p>
+    </div>
     <div class="container mt-5">
         <div class="row justify-content-center">
             <div class="col-md-6">

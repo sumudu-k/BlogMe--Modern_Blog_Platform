@@ -1,7 +1,7 @@
 <?php
 require_once '../config/database.php';
 require_once '../includes/functions.php';
-
+ob_start();
 $pageTitle = 'Create an Account';
 $pageDescription = 'Join our blogging community';
 
@@ -11,97 +11,108 @@ $firstName = '';
 $lastName = '';
 $errors = [];
 
-// Process form submission
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $username = trim($_POST['username']);
-    $email = trim($_POST['email']);
-    $firstName = trim($_POST['first_name']);
-    $lastName = trim($_POST['last_name']);
-    $password = $_POST['password'];
-    $confirmPassword = $_POST['confirm_password'];
+include_once '../includes/header.php';
 
-    if (empty($username)) {
-        $errors['username'] = 'Username is required';
-    } elseif (!preg_match('/^[a-zA-Z0-9_]{3,20}$/', $username)) {
-        $errors['username'] = 'Username must be between 3-20 characters and can only contain letters, numbers and underscores';
-    }
 
-    if (empty($email)) {
-        $errors['email'] = 'Email is required';
-    } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        $errors['email'] = 'Please enter a valid email address';
-    }
+$allowReset = $_ENV['ALLOW_REGISTER'];
+if ($allowReset === 'false'): ?>
+<div class=" mt-3 container  alert alert-danger" role='alert'>"You cannot create new accounts in Live hosted website.
+    Please
+    setup your own local environment to access full features. Visit [https://github.com/sumudu-k/BlogMe] for more
+    details."</div>
+<?php else: ?>
+<?php
+    // Process form submission
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $username = trim($_POST['username']);
+        $email = trim($_POST['email']);
+        $firstName = trim($_POST['first_name']);
+        $lastName = trim($_POST['last_name']);
+        $password = $_POST['password'];
+        $confirmPassword = $_POST['confirm_password'];
 
-    if (empty($firstName)) {
-        $errors['first_name'] = 'First name is required';
-    }
+        if (empty($username)) {
+            $errors['username'] = 'Username is required';
+        } elseif (!preg_match('/^[a-zA-Z0-9_]{3,20}$/', $username)) {
+            $errors['username'] = 'Username must be between 3-20 characters and can only contain letters, numbers and underscores';
+        }
 
-    if (empty($lastName)) {
-        $errors['last_name'] = 'Last name is required';
-    }
+        if (empty($email)) {
+            $errors['email'] = 'Email is required';
+        } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            $errors['email'] = 'Please enter a valid email address';
+        }
 
-    if (empty($password)) {
-        $errors['password'] = 'Password is required';
-    } elseif (strlen($password) < 8) {
-        $errors['password'] = 'Password must be at least 8 characters';
-    }
+        if (empty($firstName)) {
+            $errors['first_name'] = 'First name is required';
+        }
 
-    if ($password !== $confirmPassword) {
-        $errors['confirm_password'] = 'Passwords do not match';
-    }
+        if (empty($lastName)) {
+            $errors['last_name'] = 'Last name is required';
+        }
 
-    if (empty($errors)) {
-        $result = $userAuth->register($username, $email, $password, $firstName, $lastName);
+        if (empty($password)) {
+            $errors['password'] = 'Password is required';
+        } elseif (strlen($password) < 8) {
+            $errors['password'] = 'Password must be at least 8 characters';
+        }
 
-        if ($result['success']) {
-            $_SESSION['registration_success'] = true;
-            $_SESSION['registered_username'] = $username;
+        if ($password !== $confirmPassword) {
+            $errors['confirm_password'] = 'Passwords do not match';
+        }
 
-            try {
-                $stmt = $pdo->prepare("SELECT id FROM users WHERE username = ? LIMIT 1");
-                $stmt->execute([$username]);
-                $user = $stmt->fetch();
+        if (empty($errors)) {
+            $result = $userAuth->register($username, $email, $password, $firstName, $lastName);
 
-                if ($user) {
-                    $_SESSION['user_id'] = $user['id'];
-                    $_SESSION['username'] = $username;
-                    $_SESSION['user_type'] = 'user';
-                    $_SESSION['user_fullname'] = $firstName . ' ' . $lastName;
-                    $_SESSION['email'] = $email;
-                    $_SESSION['last_activity'] = time();
+            if ($result['success']) {
+                $_SESSION['registration_success'] = true;
+                $_SESSION['registered_username'] = $username;
 
-                    header('Location: ../index.php?welcome=1');
-                    exit;
-                } else {
-                    $errors['db'] = 'Error retrieving user information. Please try logging in.';
-                }
-            } catch (PDOException $e) {
-                error_log($e->getMessage());
-                $errors['db'] = 'Database error: ' . $e->getMessage();
-            }
-        } else {
-            if (strpos($result['message'], 'already exists') !== false) {
                 try {
-                    $stmt = $pdo->prepare("SELECT id FROM users WHERE username = ?");
+                    $stmt = $pdo->prepare("SELECT id FROM users WHERE username = ? LIMIT 1");
                     $stmt->execute([$username]);
-                    if ($stmt->fetch()) {
-                        $errors['username'] = 'This username is already taken';
+                    $user = $stmt->fetch();
+
+                    if ($user) {
+                        $_SESSION['user_id'] = $user['id'];
+                        $_SESSION['username'] = $username;
+                        $_SESSION['user_type'] = 'user';
+                        $_SESSION['user_fullname'] = $firstName . ' ' . $lastName;
+                        $_SESSION['email'] = $email;
+                        $_SESSION['last_activity'] = time();
+
+                        header('Location: ../index.php?welcome=1');
+                        exit;
                     } else {
-                        $errors['email'] = 'This email is already registered';
+                        $errors['db'] = 'Error retrieving user information. Please try logging in.';
                     }
                 } catch (PDOException $e) {
                     error_log($e->getMessage());
                     $errors['db'] = 'Database error: ' . $e->getMessage();
                 }
             } else {
-                $errors['db'] = $result['message'];
+                if (strpos($result['message'], 'already exists') !== false) {
+                    try {
+                        $stmt = $pdo->prepare("SELECT id FROM users WHERE username = ?");
+                        $stmt->execute([$username]);
+                        if ($stmt->fetch()) {
+                            $errors['username'] = 'This username is already taken';
+                        } else {
+                            $errors['email'] = 'This email is already registered';
+                        }
+                    } catch (PDOException $e) {
+                        error_log($e->getMessage());
+                        $errors['db'] = 'Database error: ' . $e->getMessage();
+                    }
+                } else {
+                    $errors['db'] = $result['message'];
+                }
             }
         }
     }
-}
 
-include '../includes/header.php';
-?>
+endif ?>
+
 
 <section class="register-hero py-5 bg-primary text-white">
     <div class="container">
