@@ -9,6 +9,22 @@ if (!isset($_SESSION['admin_id'])) {
     exit;
 }
 
+// Get admin role 
+$stmt_role = $pdo->prepare("SELECT * FROM admins WHERE id = ?");
+$stmt_role->execute([$_SESSION['admin_id']]);
+$adminInfo = $stmt_role->fetch();
+
+$adminRole = $adminInfo['role'] ?? 'admin';
+
+include_once 'navbar.php';
+
+if ($adminRole === 'demo'): ?>
+<div class="container-lg mt-3  alert alert-warning text-center" role="alert">
+    You cannot add, update or delete anything in Demo mode. Please setup your own local environment to access full
+    features. Visit [https://github.com/sumudu-k/BlogMe] for more details.
+</div>
+<?php endif;
+
 $pageTitle = 'Manage Blogs';
 $message = '';
 $messageType = '';
@@ -134,9 +150,6 @@ $categories = $categoryManager->getCategories();
 </head>
 
 <body>
-    <?php include_once 'navbar.php'; ?>
-
-
     <div class="container-fluid py-4">
         <div class="row mb-4">
             <div class="col-12 d-flex justify-content-between align-items-center">
@@ -269,6 +282,18 @@ $categories = $categoryManager->getCategories();
 
                                 <td><?php echo date('M j, Y', strtotime($blog['created_at'])); ?></td>
                                 <td>
+                                    <?php if ($adminRole === 'demo'): ?>
+                                    <div class="btn-group btn-group-sm">
+                                        <a href="../blog/view.php?id=<?php echo $blog['id']; ?>" target="_blank"
+                                            class="btn btn-outline-primary" data-bs-toggle="tooltip" title="View Blog">
+                                            <i class="fas fa-eye"></i>
+                                        </a>
+
+                                        <a href="#" class="btn btn-outline-secondary ">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </a>
+                                    </div>
+                                    <?php else: ?>
                                     <div class="btn-group btn-group-sm">
                                         <a href="../blog/view.php?id=<?php echo $blog['id']; ?>" target="_blank"
                                             class="btn btn-outline-primary" data-bs-toggle="tooltip" title="View Blog">
@@ -282,6 +307,7 @@ $categories = $categoryManager->getCategories();
                                             <i class="fas fa-trash-alt"></i>
                                         </a>
                                     </div>
+                                    <?php endif; ?>
                                 </td>
                             </tr>
                             <?php endforeach; ?>

@@ -11,12 +11,28 @@ if (!isset($_SESSION['user_id'])) {
     header("Location: ../auth/login.php");
     exit;
 }
-
 $userId = $_SESSION['user_id'];
 $errorMsg = '';
 $successMsg = '';
 $user = null;
 $userBlogs = [];
+
+
+// Get user role 
+$stmt_role = $pdo->prepare("SELECT * FROM users WHERE id = ?");
+$stmt_role->execute([$_SESSION['user_id']]);
+$userInfo = $stmt_role->fetch();
+
+$userRole = $userInfo['role'] ?? 'user';
+
+$userId = $_SESSION['user_id'];
+$errorMsg = '';
+$successMsg = '';
+
+if ($userRole === 'demo') {
+    $errorMsg = "You cannot update profile, edit or delete blog posts in Demo mode. Please setup your own local environment to access full features. Visit [https://github.com/sumudu-k/BlogMe] for more details.";
+}
+
 
 try {
     $stmt = $pdo->prepare("
@@ -31,7 +47,6 @@ try {
     if (!$user) {
         $errorMsg = "User not found!";
     } else {
-        // Fetch user's blogs
         $userBlogs = $blogManager->getUserBlogs($userId);
     }
 } catch (PDOException $e) {
@@ -39,8 +54,66 @@ try {
     $errorMsg = "An error occurred while retrieving your profile.";
 }
 
+// Handle blog deletion
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'delete_blog') {
+    if (isset($_POST['blog_id'])) {
+        $blogId = (int)$_POST['blog_id'];
+
+        try {
+            // Get blog title for success message
+            $stmt = $pdo->prepare("SELECT title FROM blogs WHERE id = ? AND author_id = ?");
+            $stmt->execute([$blogId, $userId]);
+            $blogTitle = $stmt->fetchColumn();
+
+            if ($blogTitle) {
+                $pdo->beginTransaction();
+
+                $result = $blogManager->deleteBlog($blogId, $userId);
+
+                if ($result['success']) {
+                    // Delete featured image if it exists
+                    if (!empty($result['featured_image'])) {
+                        $imagePath = '../assets/images/' . $result['featured_image'];
+                        if (file_exists($imagePath)) {
+                            @unlink($imagePath);
+                        }
+                    }
+
+                    $pdo->commit();
+                    $successMsg = "Blog post '" . htmlspecialchars($blogTitle) . "' has been deleted successfully.";
+
+                    $userBlogs = $blogManager->getUserBlogs($userId);
+
+                    // Update user blog count
+                    $stmt = $pdo->prepare("
+                        SELECT id, username, email, first_name, last_name, avatar, created_at, 
+                               (SELECT COUNT(*) FROM blogs WHERE author_id = users.id) as blog_count
+                        FROM users 
+                        WHERE id = ?
+                    ");
+                    $stmt->execute([$userId]);
+                    $user = $stmt->fetch();
+                } else {
+                    $pdo->rollBack();
+                    $errorMsg = $result['message'];
+                }
+            } else {
+                $errorMsg = "Blog post not found or you don't have permission to delete it.";
+            }
+        } catch (PDOException $e) {
+            if ($pdo->inTransaction()) {
+                $pdo->rollBack();
+            }
+            error_log("Blog deletion error: " . $e->getMessage());
+            $errorMsg = "An error occurred while deleting the blog post. Please try again.";
+        }
+    } else {
+        $errorMsg = "Invalid blog ID provided.";
+    }
+}
+
 // Handle profile update
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && $userRole !== 'demo') {
     if (isset($_POST['update_profile'])) {
         $firstName = trim($_POST['first_name'] ?? '');
         $lastName = trim($_POST['last_name'] ?? '');
@@ -198,7 +271,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <h5><?php echo $user['blog_count']; ?></h5>
                             <small class="text-muted">Blogs</small>
                         </div>
-
                     </div>
 
                     <p class="text-muted">
@@ -206,7 +278,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     </p>
                 </div>
             </div>
-
         </div>
 
         <div class="col-lg-8">
@@ -281,7 +352,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
     </div>
 
-
     <div class="row">
         <div class="col-12">
             <!-- My Blogs -->
@@ -311,8 +381,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php foreach ($userBlogs as $blog):
-                                        ?>
+                                <?php foreach ($userBlogs as $blog): ?>
                                 <tr>
                                     <td>
                                         <?php if (!empty($blog['featured_image'])): ?>
@@ -355,8 +424,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                         <div class="btn-group btn-group-sm">
                                             <a href="edit-blog.php?id=<?php echo $blog['id']; ?>"
                                                 class="btn btn-outline-primary">Edit</a>
+                                            <?php if ($userRole === 'demo'): ?>
+                                            <button type="button" disabled>Delete</button>
+                                            <?php else: ?>
                                             <button type="button" class="btn btn-outline-danger"
-                                                onclick="confirmDeleteBlog(<?php echo $blog['id']; ?>)">Delete</button>
+                                                onclick="confirmDeleteBlog(<?php echo $blog['id']; ?>, '<?php echo addslashes(htmlspecialchars($blog['title'])); ?>')">Delete</button>
+                                            <?php endif ?>
+
                                         </div>
                                     </td>
                                 </tr>
@@ -373,6 +447,34 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </div>
 
 <script>
+function confirmDeleteBlog(blogId, blogTitle) {
+    if (confirm('Are you sure you want to delete the blog post "' + blogTitle +
+            '"?\n\nThis action cannot be undone.')) {
+        // Create and submit form
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = window.location.href;
+
+        // Add hidden inputs
+        const blogIdInput = document.createElement('input');
+        blogIdInput.type = 'hidden';
+        blogIdInput.name = 'blog_id';
+        blogIdInput.value = blogId;
+
+        const actionInput = document.createElement('input');
+        actionInput.type = 'hidden';
+        actionInput.name = 'action';
+        actionInput.value = 'delete_blog';
+
+        form.appendChild(blogIdInput);
+        form.appendChild(actionInput);
+
+        // Submit the form
+        document.body.appendChild(form);
+        form.submit();
+    }
+}
+
 document.addEventListener('DOMContentLoaded', function() {
     // Re-initialize Bootstrap dropdowns
     if (typeof bootstrap !== 'undefined') {

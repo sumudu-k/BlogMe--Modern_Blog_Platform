@@ -12,6 +12,22 @@ if (!isset($_SESSION['admin_id'])) {
 $message = '';
 $messageType = '';
 
+// Get admin role 
+$stmt_role = $pdo->prepare("SELECT * FROM admins WHERE id = ?");
+$stmt_role->execute([$_SESSION['admin_id']]);
+$adminInfo = $stmt_role->fetch();
+
+$adminRole = $adminInfo['role'] ?? 'admin';
+
+include_once 'navbar.php';
+
+if ($adminRole === 'demo'): ?>
+<div class="container-lg mt-3  alert alert-warning text-center" role="alert">
+    You cannot add, update or delete anything in Demo mode. Please setup your own local environment to access full
+    features. Visit [https://github.com/sumudu-k/BlogMe] for more details.
+</div>
+<?php endif;
+
 // Search parameters
 $search = isset($_GET['search']) ? trim($_GET['search']) : '';
 
@@ -209,6 +225,17 @@ try {
                                 </td>
                                 <td><?php echo date('M j, Y', strtotime($user['created_at'])); ?></td>
                                 <td>
+                                    <?php if ($adminRole === 'demo'): ?>
+                                    <div class="btn-group btn-group-sm">
+                                        <a href="#" class="btn btn-outline-secondary">
+                                            <i
+                                                class="fas <?php echo $user['is_blocked'] ? 'fa-user-check' : 'fa-user-slash'; ?>"></i>
+                                        </a>
+                                        <a href="#" class="btn btn-outline-secondary">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </a>
+                                    </div>
+                                    <?php else: ?>
                                     <div class="btn-group btn-group-sm">
                                         <a href="users.php?action=toggle_block&id=<?php echo $user['id']; ?><?php echo !empty($search) ? '&search=' . urlencode($search) : ''; ?>&page=<?php echo $page; ?>"
                                             class="btn btn-outline-<?php echo $user['is_blocked'] ? 'success' : 'warning'; ?>"
@@ -222,6 +249,7 @@ try {
                                             <i class="fas fa-trash-alt"></i>
                                         </a>
                                     </div>
+                                    <?php endif; ?>
                                 </td>
                             </tr>
                             <?php endforeach; ?>

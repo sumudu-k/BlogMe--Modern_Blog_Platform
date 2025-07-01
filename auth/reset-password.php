@@ -17,9 +17,12 @@ $resetCode = '';
 include_once '../includes/header.php';
 
 
+
 $allowReset = $_ENV['ALLOW_PASSWORD_RESET'];
 if ($allowReset === 'false'): ?>
-<div class=" mt-3 container  alert alert-danger" role='alert'>You can not reset password</div>
+<div class=" mt-3 container  alert alert-danger" role='alert'>"You cannot reset password in Live hosted website. Please
+    setup your own local environment to access full features. Visit [https://github.com/sumudu-k/BlogMe] for more
+    details."</div>
 <?php else: ?>
 <?php
     if (isset($_GET['token']) && !empty($_GET['token']) && isset($_GET['email'])) {
@@ -47,6 +50,7 @@ if ($allowReset === 'false'): ?>
             $messageType = 'danger';
         } else {
             $result = $userAuth->requestPasswordReset($email);
+
 
             if ($result['success']) {
                 if (isset($result['token'])) {

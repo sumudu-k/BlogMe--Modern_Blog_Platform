@@ -11,9 +11,23 @@ if (!isset($_SESSION['user_id'])) {
     exit;
 }
 
+// Get user role 
+$stmt_role = $pdo->prepare("SELECT * FROM users WHERE id = ?");
+$stmt_role->execute([$_SESSION['user_id']]);
+$userInfo = $stmt_role->fetch();
+
+$userRole = $userInfo['role'] ?? 'user';
+
 $userId = $_SESSION['user_id'];
 $errorMsg = '';
 $successMsg = '';
+
+if ($userRole === 'demo') {
+    $errorMsg = "You cannot edit your blogs in Demo mode. Please setup your own local environment to access full features. Visit [https://github.com/sumudu-k/BlogMe] for more details.";
+}
+
+$userId = $_SESSION['user_id'];
+
 $blog = null;
 $categories = $categoryManager->getCategories();
 
@@ -49,6 +63,7 @@ try {
 
 // Handle form submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
     $title = trim($_POST['title'] ?? '');
     $content = trim($_POST['content'] ?? '');
     $categoryId = (int)($_POST['category_id'] ?? 0);
@@ -139,6 +154,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 }
+
 ?>
 
 <div class="container mt-4 mb-5">
