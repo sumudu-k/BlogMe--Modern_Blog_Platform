@@ -13,6 +13,22 @@ $pageTitle = 'Manage Categories';
 $message = '';
 $messageType = '';
 
+// Get admin role 
+$stmt_role = $pdo->prepare("SELECT * FROM admins WHERE id = ?");
+$stmt_role->execute([$_SESSION['admin_id']]);
+$adminInfo = $stmt_role->fetch();
+
+$adminRole = $adminInfo['role'] ?? 'admin';
+
+include_once 'navbar.php';
+
+if ($adminRole === 'demo'): ?>
+<div class="container-lg mt-3  alert alert-warning text-center" role="alert">
+    You cannot add, update or delete anything in Demo mode. Please setup your own local environment to access full
+    features. Visit [https://github.com/sumudu-k/BlogMe] for more details.
+</div>
+<?php endif;
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Add new category
     if (isset($_POST['add_category'])) {
@@ -103,10 +119,6 @@ try {
 </head>
 
 <body>
-    <?php
-    include_once 'navbar.php';
-    ?>
-
     <div class="container-fluid py-4">
         <div class="row mb-4">
             <div class="col-12 d-flex justify-content-between align-items-center">
@@ -116,9 +128,15 @@ try {
                     </h1>
                     <p class="text-muted">Organize your blog content with categories</p>
                 </div>
+                <?php if ($adminRole === 'demo'): ?>
+                <button type="button" class="btn btn-primary">
+                    <i class="fas fa-plus-circle me-2"></i>Add New Category
+                </button>
+                <?php else: ?>
                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addCategoryModal">
                     <i class="fas fa-plus-circle me-2"></i>Add New Category
                 </button>
+                <?php endif; ?>
             </div>
         </div>
 
@@ -172,6 +190,16 @@ try {
                                 </td>
                                 <td><?php echo date('M j, Y', strtotime($category['created_at'])); ?></td>
                                 <td>
+                                    <?php if ($adminRole === 'demo'): ?>
+                                    <div class="btn-group btn-group-sm">
+                                        <button type="button" class="btn btn-outline-secondary">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <a href="#" class="btn btn-outline-secondary">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </a>
+                                    </div>
+                                    <?php else: ?>
                                     <div class="btn-group btn-group-sm">
                                         <button type="button" class="btn btn-outline-primary edit-category"
                                             data-id="<?php echo $category['id']; ?>"
@@ -187,6 +215,8 @@ try {
                                             <i class="fas fa-trash-alt"></i>
                                         </a>
                                     </div>
+                                    <?php endif; ?>
+
                                 </td>
                             </tr>
                             <?php endforeach; ?>
