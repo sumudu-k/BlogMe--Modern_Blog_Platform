@@ -98,6 +98,11 @@
             </div>
         </div>
     </div>
+    <div class="text-center">
+        Design and Developed by <a href="https://github.com/sumudu-k" target="_blank" class="text-light fw-bold">Sumudu
+            Kulathunga</a>
+        All rights reserved.
+    </div>
 </footer>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>

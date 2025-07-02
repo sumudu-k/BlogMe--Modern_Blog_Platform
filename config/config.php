@@ -1,7 +1,11 @@
 <?php
+require_once __DIR__ . '/../vendor/autoload.php';
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/..');
+$dotenv->load();
+
 // Site configuration
 define('SITE_NAME', 'BlogMe');
-define('SITE_URL', 'http://localhost/blog2/blog-website');
+define('SITE_URL', getenv('SITE_URL') ?: 'http://localhost/blog2/blog-website');
 define('SITE_DESCRIPTION', 'A modern blog platform for sharing your thoughts');
 
 // File upload settings
