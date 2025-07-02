@@ -85,23 +85,10 @@
 
         <hr class="border-secondary my-4">
 
-        <div class="row align-items-center">
-            <div class="col-md-6">
-                <p class="text-muted mb-0">
-                    &copy; <?php echo date('Y'); ?> <?php echo SITE_NAME; ?>. All rights reserved.
-                </p>
-            </div>
-            <div class="col-md-6 text-md-end">
-                <a href="#" class="text-muted text-decoration-none me-3">Privacy Policy</a>
-                <a href="#" class="text-muted text-decoration-none me-3">Terms of Service</a>
-                <a href="<?php echo SITE_URL; ?>/admin/login.php" class="text-muted text-decoration-none">Admin</a>
-            </div>
-        </div>
     </div>
     <div class="text-center">
         Design and Developed by <a href="https://github.com/sumudu-k" target="_blank" class="text-light fw-bold">Sumudu
             Kulathunga</a>
-        All rights reserved.
     </div>
 </footer>
 
