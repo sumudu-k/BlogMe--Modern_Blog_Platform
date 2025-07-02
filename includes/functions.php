@@ -421,7 +421,7 @@ class AdminAuth
             $mail->isHTML(true);
             $mail->Subject = 'Admin Password Reset Request';
 
-            $resetUrl = 'http://localhost/blog2/blog-website/admin/auth/reset-password.php?token=' . $token . '&email=' . urlencode($email);
+            $resetUrl = rtrim($_ENV['SITE_URL'], '/') . '/admin/auth/reset-password.php?token=' . $token . '&email=' . urlencode($email);
 
             $mail->Body = '
             <html>
