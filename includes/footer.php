@@ -89,6 +89,7 @@
     <div class="text-center">
         Design and Developed by <a href="https://github.com/sumudu-k" target="_blank" class="text-light fw-bold">Sumudu
             Kulathunga</a>
+        <p>&copy; All right reserved 2025</p>
     </div>
 </footer>
 
