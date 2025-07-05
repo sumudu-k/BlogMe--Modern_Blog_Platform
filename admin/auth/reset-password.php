@@ -146,7 +146,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['reset_password'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Reset Admin Password</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
     body {
@@ -232,13 +232,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['reset_password'])) {
                         </div>
                     </div>
                     <div class="d-grid gap-2 ">
+                        <?php
+                            if ($_ENV['ALLOW_PASSWORD_RESET'] === 'true'): ?>
                         <button type="submit" name="request_reset" class="btn  bg-primary text-white">
                             <i class="fas fa-paper-plane me-2  "></i>Send Reset Link
                         </button>
+                        <?php else: ?>
+                        <button type="button" class="btn  bg-secondary text-white">
+                            <i class="fas fa-paper-plane me-2  "></i>Send Reset Link
+                        </button>
+                        <div class=" mt-3 container  alert alert-danger" role='alert'>"You cannot reset password in Live
+                            hosted website. Please
+                            setup your own local environment to access full features. Visit
+                            [https://github.com/sumudu-k/BlogMe] for more
+                            details."</div>
+                        <?php endif ?>
                     </div>
                 </form>
                 <div class="mt-4 text-center">
-                    <p class="mb-0">Remember your password? <a href="../login.php" class="login-link">Login to Admin</a>
+                    <p class="mb-0">Remember your password? <a href="./login.php" class="login-link">Login to Admin</a>
                     </p>
                 </div>
                 <?php endif; ?>
@@ -336,7 +348,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['reset_password'])) {
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../../bootstrap/js/bootstrap.bundle.min.js"></script>
     <script>
     // Function to toggle password visibility
     function togglePasswordVisibility(fieldId) {

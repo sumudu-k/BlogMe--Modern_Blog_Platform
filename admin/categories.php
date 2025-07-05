@@ -113,7 +113,7 @@ try {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Manage categories</title>
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="../assets/css/admin.css">
 </head>
@@ -121,7 +121,7 @@ try {
 <body>
     <div class="container-fluid py-4">
         <div class="row mb-4">
-            <div class="col-12 d-flex justify-content-between align-items-center">
+            <div class="col-12 align-items-center d-md-flex justify-content-between">
                 <div>
                     <h1 class="display-5 fw-bold mb-0">
                         <i class="fas fa-folder-open me-2 text-primary"></i> Manage Categories
@@ -129,11 +129,12 @@ try {
                     <p class="text-muted">Organize your blog content with categories</p>
                 </div>
                 <?php if ($adminRole === 'demo'): ?>
-                <button type="button" class="btn btn-primary">
+                <button type="button" class="btn btn-primary ">
                     <i class="fas fa-plus-circle me-2"></i>Add New Category
                 </button>
                 <?php else: ?>
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addCategoryModal">
+                <button type="button" class="btn btn-primary  " data-bs-toggle="modal"
+                    data-bs-target="#addCategoryModal">
                     <i class="fas fa-plus-circle me-2"></i>Add New Category
                 </button>
                 <?php endif; ?>
@@ -301,7 +302,8 @@ try {
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../bootstrap/js/bootstrap.bundle.min.js"></script>
+
     <script>
     document.addEventListener('DOMContentLoaded', function() {
         const editButtons = document.querySelectorAll('.edit-category');
