@@ -186,7 +186,7 @@ $previewData = isset($_SESSION['notification_preview']) ? $_SESSION['notificatio
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Manage Nootifications</title>
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="../assets/css/admin.css">
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/5/w3.css">
@@ -449,13 +449,15 @@ $previewData = isset($_SESSION['notification_preview']) ? $_SESSION['notificatio
                                 <p class="mb-1 text-truncate"><?php echo htmlspecialchars($notification['message']); ?>
                                 </p>
                                 <div class="d-flex justify-content-between align-items-center mt-2">
-                                    <small class="text-muted">
+                                    <small class="text-muted d-flex flex-column">
                                         <?php if ($notification['target_type'] === 'all_users'): ?>
-                                        <i class="fas fa-users me-1"></i> All Users
-                                        <?php else: ?>
-                                        <i class="fas fa-user me-1"></i> Specific User
-                                        <?php endif; ?>
-                                        <span class="ms-2">
+                                        <span>
+                                            <i class="fas fa-users me-1"></i> All Users
+                                            <?php else: ?>
+                                            <i class="fas fa-user me-1"></i> Specific User
+                                            <?php endif; ?>
+                                        </span>
+                                        <span class="ms-0">
                                             <i class="fas fa-user-shield me-1"></i> By
                                             <?php echo htmlspecialchars($notification['admin_username']); ?>
                                         </span>
@@ -493,8 +495,7 @@ $previewData = isset($_SESSION['notification_preview']) ? $_SESSION['notificatio
         <?php endif; ?>
     </div>
 
-    <!-- Bootstrap JS Bundle with Popper -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../bootstrap/js/bootstrap.bundle.min.js"></script>
 
     <script>
     // Show/hide target user select based on target type

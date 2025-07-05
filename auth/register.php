@@ -12,8 +12,29 @@ $lastName = '';
 $errors = [];
 
 include_once '../includes/header.php';
+?>
 
+<section class="register-hero py-5  text-white">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <h1 class="display-4 fw-bold mb-4">Join Our Community</h1>
+                <p class="lead mb-4">Create an account to start sharing your stories and connect with other bloggers.
+                </p>
+                <div class="d-flex gap-3">
+                    <a href="../auth/login.php" class="btn btn-outline-light btn-lg">
+                        <i class="fas fa-sign-in-alt me-2"></i>Already have an account?
+                    </a>
+                </div>
+            </div>
+            <div class="col-lg-6 text-center">
+                <i class="fas fa-user-plus display-1 opacity-50 mt-4 mt-md-0"></i>
+            </div>
+        </div>
+    </div>
+</section>
 
+<?php
 $allowReset = $_ENV['ALLOW_REGISTER'];
 if ($allowReset === 'false'): ?>
 <div class=" mt-3 container  alert alert-danger" role='alert'>"You cannot create new accounts in Live hosted website.
@@ -87,7 +108,6 @@ if ($allowReset === 'false'): ?>
                         $errors['db'] = 'Error retrieving user information. Please try logging in.';
                     }
                 } catch (PDOException $e) {
-                    error_log($e->getMessage());
                     $errors['db'] = 'Database error: ' . $e->getMessage();
                 }
             } else {
@@ -101,7 +121,6 @@ if ($allowReset === 'false'): ?>
                             $errors['email'] = 'This email is already registered';
                         }
                     } catch (PDOException $e) {
-                        error_log($e->getMessage());
                         $errors['db'] = 'Database error: ' . $e->getMessage();
                     }
                 } else {
@@ -114,25 +133,7 @@ if ($allowReset === 'false'): ?>
 endif ?>
 
 
-<section class="register-hero py-5 bg-primary text-white">
-    <div class="container">
-        <div class="row align-items-center">
-            <div class="col-lg-6">
-                <h1 class="display-4 fw-bold mb-4">Join Our Community</h1>
-                <p class="lead mb-4">Create an account to start sharing your stories and connect with other bloggers.
-                </p>
-                <div class="d-flex gap-3">
-                    <a href="../auth/login.php" class="btn btn-outline-light btn-lg">
-                        <i class="fas fa-sign-in-alt me-2"></i>Already have an account?
-                    </a>
-                </div>
-            </div>
-            <div class="col-lg-6 text-center">
-                <i class="fas fa-user-plus display-1 opacity-50"></i>
-            </div>
-        </div>
-    </div>
-</section>
+
 
 <div class="container py-5">
     <div class="row justify-content-center">
@@ -330,7 +331,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 <style>
 .register-hero {
-    background: linear-gradient(135deg, var(--bs-primary) 0%, #0056b3 100%);
+    background: linear-gradient(135deg, var(--bs-primary) 0%, rgb(25, 0, 165) 100%);
 }
 
 .btn-primary {

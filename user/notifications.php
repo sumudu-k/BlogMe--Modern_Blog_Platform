@@ -1,9 +1,9 @@
 <?php
 session_start();
+ob_start();
 require_once '../config/database.php';
 require_once '../includes/functions.php';
 
-// Check if user is logged in
 if (!isset($_SESSION['user_id'])) {
     header('Location: ../login.php');
     exit;
@@ -203,9 +203,8 @@ try {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Notifications - <?php echo SITE_NAME; ?></title>
+    <title>My Notifications</title>
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
     .notification-badge {
@@ -280,8 +279,10 @@ try {
 
 <body>
 
-    <!-- Navigation Bar -->
-    <?php include_once '../includes/navbar.php'; ?>
+    <?php
+    include_once '../includes/header.php';
+    ?>
+
 
     <div class="container py-5">
         <div class="row mb-4">
@@ -406,8 +407,8 @@ try {
                                     <i class="fas fa-clock me-1"></i>
                                     <?php echo date('F j, Y \a\t g:i a', strtotime($notification['created_at'])); ?>
                                     <?php if ($notification['sent_by']): ?>
-                                    <span class="ms-2">
-                                        <i class="fas fa-user-shield me-1"></i> From:
+                                    <span class=" d-block d-md-inline-block ms-0 ms-md-3 ">
+                                        <i class="fas fa-user-shield me-1 "></i> From:
                                         <?php echo htmlspecialchars($notification['sent_by']); ?>
                                     </span>
                                     <?php endif; ?>
@@ -498,7 +499,6 @@ try {
     </div>
 
     <?php include_once '../includes/footer.php'; ?>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
     document.addEventListener('DOMContentLoaded', function() {

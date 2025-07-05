@@ -98,19 +98,24 @@ $publishedDate = isset($blog['published_at']) ? date('F j, Y', strtotime($blog['
                         <h1 class="blog-post-title mb-1"><?php echo htmlspecialchars($blog['title']); ?></h1>
 
                         <div class="blog-post-meta mb-3">
-                            <span class="text-muted">
-                                <i class="bi bi-calendar"></i> <?php echo $publishedDate; ?>
-                            </span>
-                            <span class="mx-2">|</span>
-                            <span class="text-muted">
-                                <i class="bi bi-person"></i>
-                                <?php echo htmlspecialchars($blog['first_name'] . ' ' . $blog['last_name']); ?>
-                            </span>
-                            <span class="mx-2">|</span>
+                            <div class="d-md-inline">
+                                <span class="text-muted">
+                                    <i class="bi bi-calendar"></i> <?php echo $publishedDate; ?>
+                                </span>
+                                <span class="mx-2">|</span>
+
+                                <span class="text-muted">
+                                    <i class="bi bi-person"></i>
+                                    <?php echo htmlspecialchars($blog['first_name'] . ' ' . $blog['last_name']); ?>
+                                </span>
+                            </div>
+                            <span class="mx-2 d-none d-md-inline ">|</span>
+
                             <span class="text-muted">
                                 <i class="bi bi-eye"></i> <?php echo number_format($blog['views']); ?> views
                             </span>
                             <span class="mx-2">|</span>
+
                             <span class="text-muted">
                                 <a href="../blog/search.php?category=<?php echo $blog['category_id']; ?>" class="badge"
                                     style="background-color: <?php echo htmlspecialchars($blog['category_color']); ?>; color: #fff;">
