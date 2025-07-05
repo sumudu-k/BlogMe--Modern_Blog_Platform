@@ -159,7 +159,6 @@ if ($allowReset === 'false'): ?>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Reset Password - Blog Website</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="../assets/css/style.css">
 </head>
 
@@ -187,7 +186,7 @@ if ($allowReset === 'false'): ?>
                                 <input type="email" class="form-control" id="email" name="email" required
                                     value="<?php echo htmlspecialchars($email); ?>">
                             </div>
-                            <button type="submit" name="request_reset" class="btn btn-primary btn-block">Send Reset
+                            <button type="submit" name="request_reset" class="btn btn-primary btn-block mt-3">Send Reset
                                 Link</button>
                         </form>
                         <div class="mt-3 text-center">
@@ -234,7 +233,7 @@ if ($allowReset === 'false'): ?>
                                 <input type="password" class="form-control" id="confirm_password"
                                     name="confirm_password" required minlength="8">
                             </div>
-                            <button type="submit" name="reset_password" class="btn btn-success btn-block">Reset
+                            <button type="submit" name="reset_password" class="btn btn-success btn-block ">Reset
                                 Password</button>
                         </form>
                         <?php endif; ?>
@@ -251,9 +250,6 @@ if ($allowReset === 'false'): ?>
     </div>
 
     <?php include_once '../includes/footer.php'; ?>
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 
 </html>
