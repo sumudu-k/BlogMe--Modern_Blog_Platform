@@ -521,6 +521,7 @@ $previewData = isset($_SESSION['notification_preview']) ? $_SESSION['notificatio
         }
     });
     </script>
+    <?php include_once '../includes/admin-footer.php';  ?>
 </body>
 
 </html>

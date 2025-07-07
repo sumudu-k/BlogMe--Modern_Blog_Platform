@@ -503,6 +503,7 @@ if (isset($_GET['action']) && $_GET['action'] === 'edit' && isset($_GET['id'])) 
     }
     </script>
     <script src="../bootstrap/js/bootstrap.bundle.min.js"></script>
+    <?php include_once '../includes/admin-footer.php';  ?>
 </body>
 
 </html>

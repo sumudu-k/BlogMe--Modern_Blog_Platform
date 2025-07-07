@@ -350,7 +350,7 @@ $categories = $categoryManager->getCategories();
         <?php endif; ?>
     </div>
     <script src="../bootstrap/js/bootstrap.bundle.min.js"></script>
-
+    <?php include_once '../includes/admin-footer.php';  ?>
 </body>
 
 </html>
