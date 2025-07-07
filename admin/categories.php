@@ -333,6 +333,7 @@ try {
         vertical-align: middle;
     }
     </style>
+    <?php include_once '../includes/admin-footer.php';  ?>
 </body>
 
 </html>

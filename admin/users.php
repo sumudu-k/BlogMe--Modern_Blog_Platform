@@ -346,5 +346,6 @@ try {
     });
     </script>
 </body>
+<?php include_once '../includes/admin-footer.php';  ?>
 
 </html>
