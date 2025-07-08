@@ -29,6 +29,8 @@ if ($category) {
     $pageTitle = "Posts by " . ($authorInfo ? htmlspecialchars($authorInfo['first_name'] . ' ' . $authorInfo['last_name']) : htmlspecialchars($author));
 } elseif (!empty($searchQuery)) {
     $pageTitle = "Search: " . htmlspecialchars($searchQuery);
+} else {
+    $pageTitle = "Search Blogs";
 }
 
 // Build SQL query
@@ -450,6 +452,8 @@ $categories = $categoryManager->getCategories();
         }
     });
     </script>
+    <script src="../bootstrap/js/bootstrap.bundle.min.js"></script>
+
 
     <?php
     require_once '../includes/footer.php';

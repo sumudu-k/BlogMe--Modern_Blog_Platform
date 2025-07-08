@@ -163,5 +163,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
     </div>
 </div>
+<script src="../bootstrap/js/bootstrap.bundle.min.js"></script>
 
 <?php require_once '../includes/footer.php'; ?>

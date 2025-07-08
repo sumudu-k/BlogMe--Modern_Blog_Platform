@@ -239,6 +239,7 @@ $publishedDate = isset($blog['published_at']) ? date('F j, Y', strtotime($blog['
         </div>
         <?php endif; ?>
     </div>
+    <script src="../bootstrap/js/bootstrap.bundle.min.js"></script>
 
 </body>
 
