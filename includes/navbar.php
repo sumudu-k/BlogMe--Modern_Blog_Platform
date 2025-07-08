@@ -242,15 +242,6 @@ if (isset($_SESSION['user_id'])) {
                     </a>
                 </li>
                 <?php endif; ?>
-
-                <!-- Admin Link -->
-                <?php if (isAdminLoggedIn()): ?>
-                <li class="nav-item">
-                    <a class="nav-link text-warning" href="<?php echo SITE_URL; ?>/admin/">
-                        <i class="fas fa-cog me-1"></i>Admin
-                    </a>
-                </li>
-                <?php endif; ?>
             </ul>
         </div>
     </div>
