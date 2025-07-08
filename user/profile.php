@@ -485,5 +485,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 </script>
+<script src="../bootstrap/js/bootstrap.bundle.min.js"></script>
 
 <?php require_once '../includes/footer.php'; ?>
