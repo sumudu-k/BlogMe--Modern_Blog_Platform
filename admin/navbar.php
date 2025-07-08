@@ -1,7 +1,7 @@
 <?php
 ?>
 
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-5 ">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
         <a class="navbar-brand d-flex align-items-center" href="dashboard.php">
             <span>Welcome Admin</span>
@@ -32,4 +32,3 @@
         </div>
     </div>
 </nav>
-<div style="margin-bottom:40px;"></div>
