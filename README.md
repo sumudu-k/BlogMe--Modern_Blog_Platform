@@ -112,7 +112,7 @@ We welcome contributions to improve BlogMe! To contribute:
 
 ## 📄 <span style="color: #007ACC; font-weight: bold;">License</span>
 
-## This project is licensed under the MIT License.
+ This project is licensed under the MIT License.
 
 ## 🟡<span style="color: #007ACC; font-weight: bold;">Screenshots</span>
 
