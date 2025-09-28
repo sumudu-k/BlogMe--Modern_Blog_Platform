@@ -6,7 +6,7 @@ Welcome to **BlogMe**, a feature-rich blogging platform designed for sharing tho
 
 [![Visit Live Website](https://img.shields.io/badge/Visit-Live%20Website-%23ee0000?style=for-the-badge&logo=globe&logoColor=white)](https://blogme.sumudu.site)
 
-**🔗 Website:** https://blogme.sumudu.site
+## **🔗 Website:** https://blogme.sumudu.site
 
 ## ✨ <span style="color: #007ACC; font-weight: bold;">Features</span>
 
@@ -70,6 +70,8 @@ Welcome to **BlogMe**, a feature-rich blogging platform designed for sharing tho
    - Filter blogs by category, user, date or status.
    - Sort blogs by newest, oldest, title or most popular.
 
+---
+
 ## 💻 <span style="color: #007ACC; font-weight: bold;">Technologies Used</span>
 
 - **Frontend**: HTML, CSS, Bootstrap
@@ -80,6 +82,20 @@ Welcome to **BlogMe**, a feature-rich blogging platform designed for sharing tho
   - [vlucas/phpdotenv](https://github.com/vlucas/phpdotenv) for environment variable management.
 - **Other Tools**:
   - Composer for dependency management.
+
+---
+
+## 🖥️ Deployed Server Specifications
+
+Crystal Beauty Clear is deployed on:
+
+- ✅ **Server Provider:** DigitalOcean
+- 🌐 **Data Center Location:** BLR1 (Bangalore, India)
+- 🧠 **Memory (RAM):** 2 GB
+- 💾 **Disk Space:** 50 GB SSD
+- 🖥️ **Operating System:** Ubuntu 24.04 LTS (x64)
+
+---
 
 ## 🚀 <span style="color: #007ACC; font-weight: bold;">Installation</span>
 
@@ -97,6 +113,8 @@ Welcome to **BlogMe**, a feature-rich blogging platform designed for sharing tho
 5. Start your local server and access the platform.
 6. You need to configure your server settings by adding your `email` and `app password` for working password reset functionality.
 
+---
+
 ## 🤝 <span style="color: #007ACC; font-weight: bold;">Contributing</span>
 
 We welcome contributions to improve BlogMe! To contribute:
@@ -105,19 +123,26 @@ We welcome contributions to improve BlogMe! To contribute:
 2. Create a new branch for your feature or bug fix.
 3. Submit a pull request with a detailed description of your changes.
 
+---
+
 ## 📄 <span style="color: #007ACC; font-weight: bold;">License</span>
 
 ## This project is licensed under the MIT License.
 
+---
+
 ## 🟡<span style="color: #007ACC; font-weight: bold;">Screenshots</span>
 
 <p float="left">
-  <img src="https://raw.githubusercontent.com/sumudu-k/BlogMe/refs/heads/development/SCREENSHOTS/user-homepage.png" width="48%" />
-  <img src="https://raw.githubusercontent.com/sumudu-k/BlogMe/refs/heads/development/SCREENSHOTS/user-search.png" width="48%" />
+  <img src="https://raw.githubusercontent.com/sumudu-k/BlogMe/refs/heads/development/SCREENSHOTS/cover1.png" width="48%" />
+  <img src="https://raw.githubusercontent.com/sumudu-k/BlogMe/refs/heads/development/SCREENSHOTS/cover2.png" width="48%" />
 </p>
 <p float="left">
-  <img src="https://raw.githubusercontent.com/sumudu-k/BlogMe/refs/heads/development/SCREENSHOTS/admin-dashboard.png" width="48%" />
-  <img src="https://raw.githubusercontent.com/sumudu-k/BlogMe/refs/heads/development/SCREENSHOTS/user-posts.png" width="48%" />
+  <img src="https://raw.githubusercontent.com/sumudu-k/BlogMe/refs/heads/development/SCREENSHOTS/cover3.png" width="48%" />
+  <img src="https://raw.githubusercontent.com/sumudu-k/BlogMe/refs/heads/development/SCREENSHOTS/cover4.png" width="48%" />
 
+</p>
+<p float="left">
+  <img src="https://raw.githubusercontent.com/sumudu-k/BlogMe/refs/heads/development/SCREENSHOTS/cover5.png" width="48%" />
 </p>
 Thank you for using BlogMe! If you have any questions or feedback, feel free to contact me.
