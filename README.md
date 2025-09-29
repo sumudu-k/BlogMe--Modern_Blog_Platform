@@ -2,11 +2,13 @@
 
 Welcome to **BlogMe**, a feature-rich blogging platform designed for sharing thoughts, managing content, and engaging with users. This platform includes both user and admin panels, offering a seamless experience for all stakeholders.
 
-## <span style="color: #007ACC; font-weight: bold;">🌐 Live Demo</span>
+## <span style="color: #007ACC; font-weight: bold;">🌐 Live Website</span>
+<a href="https://blogme.sumudu.site">
+  <img src="https://img.shields.io/badge/Visit-Live%20Website-%23ee0000?style=for-the-badge&logo=globe&logoColor=white" style="height:40px; background-color:blue;" />
+</a>
+</br>
 
-[![Visit Live Website](https://img.shields.io/badge/Visit-Live%20Website-%23ee0000?style=for-the-badge&logo=globe&logoColor=white)](https://blogme.sumudu.site)
-
-## **🔗 Website:** https://blogme.sumudu.site
+## 🔗 Website: https://blogme.sumudu.site
 
 ## ✨ <span style="color: #007ACC; font-weight: bold;">Features</span>
 
